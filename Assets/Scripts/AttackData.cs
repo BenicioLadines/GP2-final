@@ -20,13 +20,17 @@ public class AttackData : MonoBehaviour
     }
     private void Update()
     {
+        if(player == null)
+        {
+            return;
+        }
         if (player.facingRight)
         {
-            currentAngle = angle;
+            currentAngle = flippedAngle;
         }
         else
         {
-            currentAngle = flippedAngle;
+            currentAngle = angle;
         }
 
     }

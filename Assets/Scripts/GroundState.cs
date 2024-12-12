@@ -42,12 +42,12 @@ public class GroundState : PlayerState
 
         if (Mathf.Abs(player.directionalInput.x) > 0)
         {
-            if(player.directionalInput.x > 0 && player.facingRight)
+            if(player.directionalInput.x > 0 && !player.facingRight)
             {
                 player.TurnAround();
             }
             
-            if(player.directionalInput.x < 0 && !player.facingRight)
+            if(player.directionalInput.x < 0 && player.facingRight)
             {
                 player.TurnAround();
             }

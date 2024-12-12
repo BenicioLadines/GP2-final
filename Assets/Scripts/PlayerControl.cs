@@ -217,12 +217,12 @@ public class PlayerControl : MonoBehaviour
     {
         if (facingRight)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = Vector3.one;
             facingRight = false;
         }
         else
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = new Vector3(-1, 1, 1);
             facingRight = true;
         }
     }
