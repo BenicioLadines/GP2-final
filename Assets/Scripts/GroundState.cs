@@ -6,22 +6,52 @@ public class GroundState : PlayerState
 {
     public override void UpdateState()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && player.controlling)
+        if (!player.controlling)
+        {
+            return;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             player.Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && player.controlling)
+        if (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(player.directionalInput.x) > 0)
         {
-            player.ChangeState(player.attackingState);
+            player.Attack(PlayerControl.AttackType.forwardGround);
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            player.Attack(PlayerControl.AttackType.neutralGround);
+        }
+        
+
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            player.ChangeState(player.crouchState);
         }
 
     }
 
     public override void FixedUpdateState()
     {
-        if (player.DirectionallyInputting())
+        if (!player.controlling)
         {
+            return;
+        }
+
+        if (Mathf.Abs(player.directionalInput.x) > 0)
+        {
+            if(player.directionalInput.x > 0 && player.facingRight)
+            {
+                player.TurnAround();
+            }
+            
+            if(player.directionalInput.x < 0 && !player.facingRight)
+            {
+                player.TurnAround();
+            }
+
             player.Walk();
         }
         else

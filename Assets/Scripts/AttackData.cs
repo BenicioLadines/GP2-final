@@ -1,14 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AttackData : MonoBehaviour
 {
-    public float angle;
+    [SerializeField]float angle;
+    float flippedAngle;
+    public float currentAngle;
     public float force;
     [SerializeField]Collider2D attackCollider;
     public bool constant;
+    public PlayerControl player;
 
+
+    private void Start()
+    {
+        flippedAngle = -angle;
+    }
+    private void Update()
+    {
+        if (player.facingRight)
+        {
+            currentAngle = angle;
+        }
+        else
+        {
+            currentAngle = flippedAngle;
+        }
+
+    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {

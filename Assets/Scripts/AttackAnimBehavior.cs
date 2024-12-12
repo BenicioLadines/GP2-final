@@ -21,6 +21,10 @@ public class AttackAnimBehavior : StateMachineBehaviour
     {
         PlayerControl player = animator.GetComponent<PlayerControl>();
         player.ChangeState(player.groundState);
+        if(player.directionalInput.y < 0)
+        {
+            player.ChangeState(player.crouchState);
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

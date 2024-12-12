@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] float airDecel;
     [SerializeField] float airSpeed;
     [SerializeField] float jumpPower;
-    Vector2 directionalInput;
+    [HideInInspector] public Vector2 directionalInput;
     [SerializeField] Vector2 groundCheckOffset;
     [SerializeField] float groundCheckRadius;
     [SerializeField] int maxHealthPoints;
@@ -29,6 +29,7 @@ public class PlayerControl : MonoBehaviour
     public float knockbackEndVelocity;
     public bool controlling;
     [SerializeField]List<AttackData> hitboxes;
+    public bool facingRight;
 
     #region States
 
@@ -36,8 +37,22 @@ public class PlayerControl : MonoBehaviour
     public AirState airState = new AirState();
     public KnockbackState knockbackState = new KnockbackState();
     public AttackingState attackingState = new AttackingState();
+    public CrouchState crouchState = new CrouchState();
 
     #endregion
+
+    public enum AttackType
+    {
+        neutralGround,
+        forwardGround,
+        downGround,
+        upGround,
+        neutralAir,
+        upAir,
+        downAir,
+        backAir
+    }
+
 
     public void ChangeState(PlayerState state)
     {
@@ -104,7 +119,7 @@ public class PlayerControl : MonoBehaviour
 
     public void Walk()
     {
-
+        animator.Play("run");
         float walkVelocity = Mathf.Lerp(rb.velocity.x, groundSpeed * directionalInput.x, groundAccel);
 
         rb.velocity = new Vector2(walkVelocity, rb.velocity.y);
@@ -118,6 +133,7 @@ public class PlayerControl : MonoBehaviour
 
     public void GroundDecelerate()
     {
+        animator.Play("standing");
         float deceleration = Mathf.Lerp(rb.velocity.x, 0, groundDecel);
         rb.velocity = new Vector2(deceleration, rb.velocity.y);
     }
@@ -167,14 +183,48 @@ public class PlayerControl : MonoBehaviour
             Death();
         }
 
-        knockbackState.knockbackForce = (Quaternion.Euler(0, 0, -attack.angle) * Vector2.up) * attack.force;
+        knockbackState.knockbackForce = (Quaternion.Euler(0, 0, -attack.currentAngle) * Vector2.up) * attack.force;
         ChangeState(knockbackState);
 
+    }
+
+    public void Attack(AttackType attackType)
+    {
+        ChangeState(attackingState);
+        switch(attackType)
+        {
+            case AttackType.neutralGround:
+                animator.Play("groundAttack");
+                break;
+            case AttackType.forwardGround:
+                animator.Play("forwardKick");
+                break;
+            case AttackType.downGround:
+                animator.Play("crouchAttack");
+                break;
+            default:
+                ChangeState(groundState);
+                break;
+        }
     }
 
     public void TakeKnockback(Vector2 knockback)
     {
         rb.velocity = knockback;
+    }
+
+    public void TurnAround()
+    {
+        if (facingRight)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+            facingRight = false;
+        }
+        else
+        {
+            transform.localScale = Vector3.one;
+            facingRight = true;
+        }
     }
 
     void Death()
