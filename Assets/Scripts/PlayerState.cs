@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState : Object
+public class PlayerState
 {
 
     protected PlayerControl player;

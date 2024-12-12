@@ -12,6 +12,10 @@ public class AirState : PlayerState
         {
             player.AirDrift();
         }
+        else
+        {
+            player.AirDecelerate();
+        }
 
         if (player.OnTheGround())
         {

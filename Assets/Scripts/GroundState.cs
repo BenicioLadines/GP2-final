@@ -6,9 +6,14 @@ public class GroundState : PlayerState
 {
     public override void UpdateState()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && player.controlling)
         {
             player.Jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && player.controlling)
+        {
+            player.ChangeState(player.attackingState);
         }
 
     }
@@ -18,6 +23,10 @@ public class GroundState : PlayerState
         if (player.DirectionallyInputting())
         {
             player.Walk();
+        }
+        else
+        {
+            player.GroundDecelerate();
         }
 
         if (!player.OnTheGround())
