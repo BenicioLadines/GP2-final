@@ -88,11 +88,18 @@ public class PlayerControl : MonoBehaviour
     {
         directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         currentState.UpdateState();
+
+        
     }
 
     private void FixedUpdate()
     {
         currentState.FixedUpdateState();
+
+        if(transform.position.y < -20)
+        {
+            Death();
+        }
     }
 
     public void Jump()
@@ -229,7 +236,7 @@ public class PlayerControl : MonoBehaviour
 
     void Death()
     {
-        Debug.Log("you freakin died");
+        Destroy(gameObject);
     }
 
     public Vector2 GetVelocity() => rb.velocity;

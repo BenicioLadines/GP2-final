@@ -14,13 +14,11 @@ public class AttackData : MonoBehaviour
     public PlayerControl player;
 
 
-    private void Start()
-    {
-        flippedAngle = -angle;
-    }
     private void Update()
     {
-        if(player == null)
+        flippedAngle = -angle;
+
+        if (player == null)
         {
             return;
         }
