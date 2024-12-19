@@ -39,7 +39,9 @@ public class AttackData : MonoBehaviour
         {
             if (otherPlayer.IsAttacking())
             {
-                Debug.Log("clash");
+                otherPlayer.AttackClash(this);
+                if (!constant) gameObject.SetActive(false);
+                return;
             }
             otherPlayer.TakeDamage(this);
             if(!constant) gameObject.SetActive(false);

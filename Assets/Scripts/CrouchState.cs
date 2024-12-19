@@ -12,12 +12,17 @@ public class CrouchState : PlayerState
 
     public override void UpdateState()
     {
+        if (Input.GetButtonDown(player.jumpButton))
+        {
+            player.Jump();
+        }
+
         if (Input.GetButtonDown(player.attackButton))
         {
             player.Attack(PlayerControl.AttackType.downGround);
         }
 
-        if (player.directionalInput.y >= 0)
+        if (player.directionalInput.y >= -0.1f)
         {
             player.ChangeState(player.groundState);
         }

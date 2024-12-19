@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
 
-    PlayerState currentState;
+    public PlayerState currentState;
     Rigidbody2D rb;
     [HideInInspector] public Animator animator;
     SpriteRenderer sr;
@@ -202,6 +202,12 @@ public class PlayerControl : MonoBehaviour
         knockbackState.knockbackForce = (Quaternion.Euler(0, 0, -attack.currentAngle) * Vector2.up) * attack.force;
         ChangeState(knockbackState);
 
+    }
+
+    public void AttackClash(AttackData attack)
+    {
+        knockbackState.knockbackForce = (Quaternion.Euler(0, 0, -attack.currentAngle) * Vector2.up) * attack.force;
+        ChangeState(knockbackState);
     }
 
     public void Attack(AttackType attackType)

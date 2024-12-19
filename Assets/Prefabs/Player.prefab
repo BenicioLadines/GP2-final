@@ -41,7 +41,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354611852948323647}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -279,7 +279,7 @@ MonoBehaviour:
   groundCheckRadius: 0.37
   maxHealthPoints: 5
   knockbackDecay: 2
-  knockbackEndVelocity: 5
+  knockbackEndVelocity: 4
   controlling: 1
   hitboxes:
   - {fileID: 6364543849615122538}

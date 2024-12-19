@@ -42,7 +42,7 @@ public class GroundState : PlayerState
             }
         }
         
-        if(player.directionalInput.y < 0)
+        if(player.directionalInput.y < -0.1f)
         {
             player.ChangeState(player.crouchState);
         }
