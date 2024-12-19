@@ -11,34 +11,46 @@ public class GroundState : PlayerState
             return;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetButtonDown(player.jumpButton))
         {
             player.Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(player.directionalInput.x) > 0)
+        if (Input.GetButtonDown(player.attackButton))
         {
-            player.Attack(PlayerControl.AttackType.forwardGround);
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            player.Attack(PlayerControl.AttackType.neutralGround);
+            if(player.DirectionallyInputting())
+            {
+                switch (player.GetInputDirection())
+                {
+                    case 0:
+                        player.Attack(PlayerControl.AttackType.upGround);
+                        break;
+                    case 1:
+                        player.Attack(PlayerControl.AttackType.forwardGround);
+                        break;
+                    case -1:
+                        player.Attack(PlayerControl.AttackType.forwardGround);
+                        break;
+                    default:
+                        player.Attack(PlayerControl.AttackType.neutralGround); 
+                        break;
+                }
+            }
+            else
+            {
+                player.Attack(PlayerControl.AttackType.neutralGround);
+            }
         }
         
-
-        if(Input.GetKeyDown(KeyCode.S))
+        if(player.directionalInput.y < 0)
         {
             player.ChangeState(player.crouchState);
         }
-
     }
 
     public override void FixedUpdateState()
     {
-        if (!player.controlling)
-        {
-            return;
-        }
+
 
         if (Mathf.Abs(player.directionalInput.x) > 0)
         {
@@ -56,6 +68,7 @@ public class GroundState : PlayerState
         }
         else
         {
+            player.animator.Play("standing");
             player.GroundDecelerate();
         }
 
@@ -63,5 +76,8 @@ public class GroundState : PlayerState
         {
             player.ChangeState(player.airState);
         }
+
     }
+
+    
 }

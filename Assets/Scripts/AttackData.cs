@@ -35,9 +35,13 @@ public class AttackData : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.TryGetComponent<PlayerControl>(out PlayerControl player))
+        if(collision.TryGetComponent<PlayerControl>(out PlayerControl otherPlayer))
         {
-            player.TakeDamage(this);
+            if (otherPlayer.IsAttacking())
+            {
+                Debug.Log("clash");
+            }
+            otherPlayer.TakeDamage(this);
             if(!constant) gameObject.SetActive(false);
         }
     }

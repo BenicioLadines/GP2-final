@@ -702,6 +702,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: sprite gp2 final_27
+      rect:
+        serializedVersion: 2
+        x: 3456
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43a6a89c761ca9e49bdf164c79043bb5
+      internalID: -256757551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -733,6 +754,7 @@ TextureImporter:
       sprite gp2 final_24: 463224954
       sprite gp2 final_25: 230068376
       sprite gp2 final_26: -1071037284
+      sprite gp2 final_27: -256757551
       sprite gp2 final_3: 669441524
       sprite gp2 final_4: -1744949209
       sprite gp2 final_5: -1718075625

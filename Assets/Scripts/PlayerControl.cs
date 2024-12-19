@@ -13,6 +13,11 @@ public class PlayerControl : MonoBehaviour
     SpriteRenderer sr;
     [HideInInspector]public Color defaultColor;
 
+    [SerializeField] string HorizontalInput;
+    [SerializeField] string VerticalInput;
+    public string attackButton;
+    public string jumpButton;
+
     [SerializeField] float groundAccel;
     [SerializeField] float groundDecel;
     [SerializeField] float groundSpeed;
@@ -38,6 +43,8 @@ public class PlayerControl : MonoBehaviour
     public KnockbackState knockbackState = new KnockbackState();
     public AttackingState attackingState = new AttackingState();
     public CrouchState crouchState = new CrouchState();
+    public AirAttackState airAttackState = new AirAttackState();
+    public LandingState landingState = new LandingState();
 
     #endregion
 
@@ -86,7 +93,10 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (controlling)
+        {
+            directionalInput = new Vector2(Input.GetAxisRaw(HorizontalInput), Input.GetAxisRaw(VerticalInput));
+        }
         currentState.UpdateState();
 
         
@@ -140,7 +150,6 @@ public class PlayerControl : MonoBehaviour
 
     public void GroundDecelerate()
     {
-        animator.Play("standing");
         float deceleration = Mathf.Lerp(rb.velocity.x, 0, groundDecel);
         rb.velocity = new Vector2(deceleration, rb.velocity.y);
     }
@@ -166,7 +175,7 @@ public class PlayerControl : MonoBehaviour
 
     public bool OnTheGround()
     {
-        if(Physics2D.OverlapCircle((Vector2)transform.position + groundCheckOffset, groundCheckRadius))
+        if (Physics2D.OverlapCircle((Vector2)transform.position + groundCheckOffset, groundCheckRadius, LayerMask.GetMask("Default")))
         {
             return true;
         }
@@ -197,22 +206,14 @@ public class PlayerControl : MonoBehaviour
 
     public void Attack(AttackType attackType)
     {
+        attackingState.attackType = attackType;
         ChangeState(attackingState);
-        switch(attackType)
-        {
-            case AttackType.neutralGround:
-                animator.Play("groundAttack");
-                break;
-            case AttackType.forwardGround:
-                animator.Play("forwardKick");
-                break;
-            case AttackType.downGround:
-                animator.Play("crouchAttack");
-                break;
-            default:
-                ChangeState(groundState);
-                break;
-        }
+    }
+
+    public void AirAttack(AttackType attackType)
+    {
+        airAttackState.attackType = attackType;
+        ChangeState(airAttackState);
     }
 
     public void TakeKnockback(Vector2 knockback)
@@ -258,5 +259,20 @@ public class PlayerControl : MonoBehaviour
         {
             hitboxes[index].gameObject.SetActive(false);
         }
+    }
+    public int GetInputDirection()
+    {
+        int angle = (int)Vector2.SignedAngle(Vector2.up, directionalInput) / 90;
+        if (facingRight)
+        {
+            angle *= -1;
+        }
+        return angle;
+        
+    }
+
+    public bool IsAttacking()
+    {
+        return currentState == attackingState || currentState == airAttackState;
     }
 }

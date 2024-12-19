@@ -2,22 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrouchState : PlayerState
+public class LandingState : PlayerState
 {
+    public float lagTime;
+
     public override void EnterState(PlayerControl player)
     {
         base.EnterState(player);
-        player.animator.Play("crouching");
+        player.HitboxDisable(0);
+        //Debug.Log(lagTime);
+        player.animator.Play("landingLag");
     }
 
     public override void UpdateState()
     {
-        if (Input.GetButtonDown(player.attackButton))
-        {
-            player.Attack(PlayerControl.AttackType.downGround);
-        }
+        base.UpdateState();
+        lagTime -= Time.deltaTime;
 
-        if (player.directionalInput.y >= 0)
+        if( lagTime < 0)
         {
             player.ChangeState(player.groundState);
         }
@@ -26,10 +28,6 @@ public class CrouchState : PlayerState
     public override void FixedUpdateState()
     {
         base.FixedUpdateState();
-
-        if (!player.OnTheGround())
-        {
-            player.ChangeState(player.airState);
-        }
     }
+
 }

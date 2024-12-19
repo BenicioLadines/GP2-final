@@ -10,6 +10,7 @@ public class KnockbackState : PlayerState
     {
         base.EnterState(player);
         player.ChangeColor(Color.gray);
+        player.animator.Play("stunned");
         player.TakeKnockback(knockbackForce);
     }
 

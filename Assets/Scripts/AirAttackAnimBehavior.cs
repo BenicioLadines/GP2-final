@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackAnimBehavior : StateMachineBehaviour
+public class AirAttackAnimBehavior : StateMachineBehaviour
 {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -20,15 +20,15 @@ public class AttackAnimBehavior : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         PlayerControl player = animator.GetComponent<PlayerControl>();
-
-        if (player.directionalInput.y < 0)
+        if (player.OnTheGround())
         {
-            player.ChangeState(player.crouchState);
-            return;
+            player.ChangeState(player.landingState);
         }
-        player.ChangeState(player.groundState);
+        else
+        {
+            player.ChangeState(player.airState);
 
-        
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
