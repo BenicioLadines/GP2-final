@@ -12,6 +12,7 @@ public class KnockbackState : PlayerState
         player.ChangeColor(Color.gray);
         player.animator.Play("stunned");
         player.TakeKnockback(knockbackForce);
+        player.ToggleKnockback(true);
     }
 
     public override void FixedUpdateState()
@@ -20,12 +21,24 @@ public class KnockbackState : PlayerState
 
         if(player.GetVelocity().magnitude < player.knockbackEndVelocity)
         {
-            player.ChangeState(player.airState);
+            if (player.OnTheGround())
+            {
+                player.ChangeState(player.groundState);
+            }
+            else
+            {
+                player.ChangeState(player.airState);
+            }
         }
+
+        
+
     }
 
     public override void ExitState()
     {
+
         player.ChangeColor(player.defaultColor);
+        player.ToggleKnockback(false);
     }
 }

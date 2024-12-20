@@ -35,6 +35,11 @@ public class PlayerControl : MonoBehaviour
     public bool controlling;
     [SerializeField]List<AttackData> hitboxes;
     public bool facingRight;
+    [SerializeField] ParticleSystem takeOffGen;
+    [SerializeField] public ParticleSystem touchGroundGen;
+    [SerializeField] ParticleSystem clashGen;
+    [SerializeField] Collider2D normalCollider;
+    [SerializeField] Collider2D knockbackCollider;
 
     #region States
 
@@ -115,6 +120,8 @@ public class PlayerControl : MonoBehaviour
     public void Jump()
     {
         rb.velocity = rb.velocity + (Vector2.up * jumpPower);
+        takeOffGen.Play();
+        touchGroundGen.Play();
         ChangeState(airState);
     }
 
@@ -206,6 +213,7 @@ public class PlayerControl : MonoBehaviour
 
     public void AttackClash(AttackData attack)
     {
+        clashGen.Play();
         knockbackState.knockbackForce = (Quaternion.Euler(0, 0, -attack.currentAngle) * Vector2.up) * attack.force;
         ChangeState(knockbackState);
     }
@@ -276,7 +284,22 @@ public class PlayerControl : MonoBehaviour
         return angle;
         
     }
-
+    /// <summary>
+    /// true sets it to knockback collider, false sets it to default
+    /// </summary>
+    public void ToggleKnockback(bool knockedBack)
+    {
+        if (knockedBack)
+        {
+            normalCollider.enabled = false;
+            knockbackCollider.enabled = true;
+        }
+        else
+        {
+            normalCollider.enabled = true;
+            knockbackCollider.enabled = false;
+        }
+    }
     public bool IsAttacking()
     {
         return currentState == attackingState || currentState == airAttackState;

@@ -12,6 +12,7 @@ public class AttackData : MonoBehaviour
     [SerializeField]Collider2D attackCollider;
     public bool constant;
     public PlayerControl player;
+    [SerializeField] ParticleSystem hitsparkGen;
 
 
     private void Update()
@@ -33,6 +34,7 @@ public class AttackData : MonoBehaviour
 
     }
 
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.TryGetComponent<PlayerControl>(out PlayerControl otherPlayer))
@@ -43,6 +45,8 @@ public class AttackData : MonoBehaviour
                 if (!constant) gameObject.SetActive(false);
                 return;
             }
+            hitsparkGen.transform.position = collision.ClosestPoint(collision.transform.position);
+            hitsparkGen.Play();
             otherPlayer.TakeDamage(this);
             if(!constant) gameObject.SetActive(false);
         }
@@ -58,7 +62,7 @@ public class AttackData : MonoBehaviour
         }
 
         
-        Vector2 destination = origin + (Vector2)((Quaternion.Euler(0, 0, -angle) * Vector2.up) * force);
+        Vector2 destination = origin + (Vector2)((Quaternion.Euler(0, 0, -currentAngle) * Vector2.up) * force);
         Gizmos.DrawLine(origin, destination);
     }
 }

@@ -44,7 +44,8 @@ public class AirAttackState : PlayerState
 
         if (player.OnTheGround())
         {
-            switch(attackType)
+            player.touchGroundGen.Play();
+            switch (attackType)
             {
                 case PlayerControl.AttackType.neutralAir:
                     player.landingState.lagTime = .14f;

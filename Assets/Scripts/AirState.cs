@@ -76,6 +76,7 @@ public class AirState : PlayerState
 
         if (player.OnTheGround())
         {
+            player.touchGroundGen.Play();
             player.ChangeState(player.groundState);
         }
     }
